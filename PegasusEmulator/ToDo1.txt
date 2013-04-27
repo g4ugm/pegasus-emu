@@ -1,0 +1,48 @@
+﻿
+This file lists whats to do:-
+=============================
+
+1. Stop/Run bits
+2. Modifiers
+3. Front Panel Hand switches
+4. Cpu execution control
+5. Constant values in ixed store locations
+	(except X0 which is always 0)
+6. Multiplications/Division
+7. Long shifts
+8. Stopen when program counter runs off end of machine.
+
+
+26/2/13
+=======
+
+Looked at implmeneting overflow. Added routines to read and set overflow.
+
+Implemented jumps.
+
+01/3/13
+=======
+
+Worked on multiply - should be fixed but not sure for -ve numbers
+
+02/3/13
+=======
+
+Worked on 21 and 22 orders => as above not sure if -ve works
+Also wrote 32 order (round) again needs testing
+
+03/03/2013
+==========
+
+Worked on CPU code execution. Seems to run two instruction program.
+Need to try loops....
+
+11/03/2013
+==========
+
+Worked on standalone program loader. Can now load and run a small program
+
+12/03/2013
+==========
+
+Partially Implemented Output TTY. Can now produce output
