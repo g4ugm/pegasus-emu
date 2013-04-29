@@ -176,6 +176,9 @@
                     If chrByte = -1 Then Exit While
 
                     Select Case Chr(chrByte)
+                        Case "|"
+                            ' ignore
+
                         Case "S" ' This is a an address in the computing store
                             '
                             ' Read the block number
@@ -230,7 +233,8 @@
                             '
                             ' Could be of the format
                             '
-                            ' n.n - Implies a main store address 
+                            ' n.n - Implies a main store address
+                            '
                             ' nn  - Is the address of a special register 
                             ' nn  - Is the number of bits to move in a shift
                             '
@@ -253,7 +257,7 @@
                                     ' this is a register address
                                     '
                                     N = Val(TmpString)
-                                ElseIf chrChar >= 0 And chrChar <= 9 Then ' Should be an integer for in immediate or shift
+                                ElseIf chrChar >= "0" And chrChar <= "9" Then ' Should be an integer for in immediate or shift
                                     TmpString = TmpString & chrChar
                                     While True
                                         chrByte = SourceStream.ReadByte()
@@ -272,35 +276,37 @@
                             '
                             ' Now there should be an "X" address
                             '
-                            If SourceStream.Position <> SourceStream.Length Then
+                            While SourceStream.Position <> SourceStream.Length
                                 chrByte = SourceStream.ReadByte()
                                 chrChar = Chr(chrByte)
-                                If chrChar < "0" Or chrChar > "7" Then
-                                    MsgBox("Foundr <" & chrChar & "> Expecting Register Number between 0 and 7 ")
-                                Else
-                                    X = Val(chrChar)
-                                End If
+                                If chrChar <> " " Then Exit While
+                            End While
+
+                            If chrChar < "0" Or chrChar > "7" Then
+                                MsgBox("Foundr <" & chrChar & "> Expecting Register Number between 0 and 7 ")
                             Else
-                                MsgBox("Partial Instruction found")
-                                Exit While
+                                X = Val(chrChar)
                             End If
+                            '
+                            ' MsgBox("Partial Instruction found")
                             '
                             ' Should be a space to skip
                             '
-                            If SourceStream.Position <> SourceStream.Length Then
-                                chrByte = SourceStream.ReadByte()
-                                chrChar = Chr(chrByte)
-                            Else
-                                MsgBox("Partial Instruction found")
-                                Exit While
-                            End If                            '
+                            'If SourceStream.Position <> SourceStream.Length Then
+                            'chrByte = SourceStream.ReadByte()
+                            'chrChar = Chr(chrByte)
+                            'Else
+                            'MsgBox("Partial Instruction found")
+                            'Exit While
+                            'End If                            '
                             '
                             ' Now a two digit instruction code
                             '
                             If SourceStream.Position <> SourceStream.Length Then
                                 chrByte = SourceStream.ReadByte()
                                 chrChar = Chr(chrByte)
-                                If chrChar < "0" Or chrChar > "7" Then
+                                If chrChar = " " Or chrChar = vbCr Or chrChar = vbLf Then
+                                ElseIf chrChar < "0" Or chrChar > "7" Then
                                     MsgBox("Foundr <" & chrChar & "> Expecting Instruction Group")
                                 Else
                                     F = Val(chrChar) * 8

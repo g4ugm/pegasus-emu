@@ -46,3 +46,8 @@ Worked on standalone program loader. Can now load and run a small program
 ==========
 
 Partially Implemented Output TTY. Can now produce output
+
+29/04/2013
+==========
+
+Fixed minor bug in tape load
